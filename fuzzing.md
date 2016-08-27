@@ -182,9 +182,9 @@ while(Fuzz::afl_persistent_loop(1000)) {
 And we'll test that we correctly have a broken module:
 
 ```
-bash$ echo "ABCD" | ~/src/perl-afl/bin/perl5.25.4 afl.pl
+bash$ echo "ABCD" | ~/src/perl-afl/bin/perl5.25.5 afl.pl
 Aborted (core dumped)
-bash$ echo "1234" | ~/src/perl-afl/bin/perl5.25.4 afl.pl
+bash$ echo "1234" | ~/src/perl-afl/bin/perl5.25.5 afl.pl
 bash$
 ```
 
