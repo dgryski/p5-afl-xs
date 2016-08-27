@@ -146,10 +146,13 @@ Finally, we need to add a routine to our fuzzing module to call back into AFL's 
 
 ```
 int
-afl_persistent_loop()
+afl_persistent_loop(count)
+    unsigned int count;
     CODE:
-        extern int __afl_persistent_loop();
-        RETVAL = __afl_persistent_loop();
+        extern int __afl_persistent_loop(unsigned int);
+        RETVAL = __afl_persistent_loop(count);
+    OUTPUT:
+        RETVAL
 ```
 
 Now, build the module.  Perl will automatically use the compiler it was built with, which in our case is AFL.
@@ -159,16 +162,17 @@ Now, build the module.  Perl will automatically use the compiler it was built wi
 make
 ```
 
-Next, our perl script that will feed the input from STDIN (where AFL will put it ) to our buggy XS module.
-Note this script is using AFL's [persistent mode](https://lcamtuf.blogspot.nl/2015/06/new-in-afl-persistent-mode.html)
-to avoid spawning the perl interpreter for every test case.
+Next, our perl script that will feed the input from STDIN (where AFL will put
+it ) to our buggy XS module.  Note this script is using AFL's [persistent
+mode](https://lcamtuf.blogspot.nl/2015/06/new-in-afl-persistent-mode.html) to
+avoid spawning the perl interpreter for every test case.
 
 Here's our test script, `afl.pl`:
 ```
 use blib "Fuzz/blib";
 use Fuzz;
 
-while(Fuzz::afl_persistent_loop()) {
+while(Fuzz::afl_persistent_loop(1000)) {
     my $input;
     sysread(STDIN, $input, 1024);
     Fuzz::fuzzme($input);
