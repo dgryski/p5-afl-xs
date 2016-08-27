@@ -203,7 +203,7 @@ Finally, start the fuzzing!
     ~/src/perl-afl/bin/perl5.25.5 afl.pl
 ```
 
-Now we wait.  On my laptop I get ~50 execs per second per core, which is slow. :(
+Now we wait.  On my laptop I get ~17k execs per second per core, which is not that bad.
 
 I'm not going to explain how to read afl's status screen -- there are lots of
 resources online for that.  However, know that inputs that cause the program to
